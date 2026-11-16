@@ -1,88 +1,8 @@
 "use client"
 
 import { useState } from "react"
-import { Code2, Brain, Sparkles, Layers, Database, Wrench, Zap } from "lucide-react"
-
-const skillCategories = [
-  {
-    title: "Programming",
-    icon: Code2,
-    color: "#00e5ff",
-    description: "Core languages for AI development",
-    skills: [
-      { name: "Python", level: 95 },
-      { name: "JavaScript", level: 85 },
-      { name: "TypeScript", level: 80 },
-      { name: "C++", level: 70 },
-      { name: "SQL", level: 85 },
-    ],
-  },
-  {
-    title: "AI/ML",
-    icon: Brain,
-    color: "#3b82f6",
-    description: "Machine learning fundamentals",
-    skills: [
-      { name: "Deep Learning", level: 90 },
-      { name: "NLP", level: 88 },
-      { name: "Computer Vision", level: 82 },
-      { name: "Recommendation Systems", level: 85 },
-      { name: "Neural Networks", level: 90 },
-    ],
-  },
-  {
-    title: "Generative AI",
-    icon: Sparkles,
-    color: "#8b5cf6",
-    description: "LLMs and modern AI systems",
-    skills: [
-      { name: "LLMs", level: 92 },
-      { name: "RAG Pipelines", level: 90 },
-      { name: "AI Agents", level: 88 },
-      { name: "Prompt Engineering", level: 95 },
-      { name: "Fine-tuning", level: 80 },
-    ],
-  },
-  {
-    title: "Frameworks",
-    icon: Layers,
-    color: "#10b981",
-    description: "AI/ML frameworks & libraries",
-    skills: [
-      { name: "LangChain", level: 92 },
-      { name: "LangGraph", level: 88 },
-      { name: "TensorFlow", level: 85 },
-      { name: "PyTorch", level: 80 },
-      { name: "Scikit-learn", level: 90 },
-    ],
-  },
-  {
-    title: "Databases",
-    icon: Database,
-    color: "#f59e0b",
-    description: "Data storage & vector DBs",
-    skills: [
-      { name: "PostgreSQL", level: 88 },
-      { name: "MongoDB", level: 85 },
-      { name: "ChromaDB", level: 90 },
-      { name: "Pinecone", level: 85 },
-      { name: "Firebase", level: 82 },
-    ],
-  },
-  {
-    title: "Tools",
-    icon: Wrench,
-    color: "#ef4444",
-    description: "Development & deployment",
-    skills: [
-      { name: "Streamlit", level: 95 },
-      { name: "Docker", level: 78 },
-      { name: "Git/GitHub", level: 90 },
-      { name: "n8n", level: 85 },
-      { name: "API Integration", level: 92 },
-    ],
-  },
-]
+import { Zap } from "lucide-react"
+import { skillCategories, skillsSection } from "@/lib/portfolio-data"
 
 function SkillBar({ name, level, color, isActive }: { name: string; level: number; color: string; isActive: boolean }) {
   return (
@@ -132,7 +52,7 @@ export function Skills() {
             </span>
           </h2>
           <p className="text-[#94a3b8] max-w-2xl mx-auto text-lg">
-            A comprehensive toolkit for building intelligent systems
+            {skillsSection.subtitle}
           </p>
         </div>
 
@@ -250,63 +170,95 @@ export function Skills() {
                 </div>
               </div>
 
-              {/* Skills List with Progress Bars */}
-              <div className="space-y-5">
-                {skillCategories[activeCategory].skills.map((skill, index) => (
-                  <SkillBar
-                    key={`${activeCategory}-${index}`}
-                    name={skill.name}
-                    level={skill.level}
-                    color={skillCategories[activeCategory].color}
-                    isActive={true}
-                  />
-                ))}
-              </div>
+              {/* Skills List with Progress Bars or Plain Badges */}
+              {skillsSection.showLevels ? (
+                <>
+                  <div className="space-y-5">
+                    {skillCategories[activeCategory].skills.map((skill, index) => (
+                      <SkillBar
+                        key={`${activeCategory}-${index}`}
+                        name={skill.name}
+                        level={skill.level ?? 0}
+                        color={skillCategories[activeCategory].color}
+                        isActive={true}
+                      />
+                    ))}
+                  </div>
 
-              {/* Quick Stats */}
-              <div className="mt-8 pt-6 border-t border-[#1e293b]">
-                <div className="flex items-center justify-between text-sm">
-                  <span className="text-[#64748b]">Average Proficiency</span>
-                  <span className="font-mono" style={{ color: skillCategories[activeCategory].color }}>
-                    {Math.round(
-                      skillCategories[activeCategory].skills.reduce((a, b) => a + b.level, 0) /
-                        skillCategories[activeCategory].skills.length
-                    )}
-                    %
-                  </span>
-                </div>
-              </div>
+                  {/* Quick Stats */}
+                  <div className="mt-8 pt-6 border-t border-[#1e293b]">
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="text-[#64748b]">Average Proficiency</span>
+                      <span className="font-mono" style={{ color: skillCategories[activeCategory].color }}>
+                        {Math.round(
+                          skillCategories[activeCategory].skills.reduce((a, b) => a + (b.level ?? 0), 0) /
+                            skillCategories[activeCategory].skills.length
+                        )}
+                        %
+                      </span>
+                    </div>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div className="flex flex-wrap gap-3">
+                    {skillCategories[activeCategory].skills.map((skill, index) => (
+                      <span
+                        key={`${activeCategory}-${index}`}
+                        className="px-4 py-2.5 rounded-xl text-sm font-mono transition-all duration-300"
+                        style={{
+                          backgroundColor: `${skillCategories[activeCategory].color}12`,
+                          color: skillCategories[activeCategory].color,
+                          border: `1px solid ${skillCategories[activeCategory].color}30`,
+                        }}
+                      >
+                        {skill.name}
+                      </span>
+                    ))}
+                  </div>
+
+                  {/* Quick Stats */}
+                  <div className="mt-8 pt-6 border-t border-[#1e293b]">
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="text-[#64748b]">Core Capabilities</span>
+                      <span className="font-mono" style={{ color: skillCategories[activeCategory].color }}>
+                        {skillCategories[activeCategory].skills.length} Skills
+                      </span>
+                    </div>
+                  </div>
+                </>
+              )}
             </div>
           </div>
         </div>
 
-        {/* Data Science Banner */}
-        <div className="mt-16 glass-card rounded-3xl p-8 md:p-10 relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-r from-[#00e5ff]/5 via-[#3b82f6]/5 to-[#8b5cf6]/5" />
-          
-          <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8">
-            <div className="text-center md:text-left">
-              <h3 className="text-2xl font-bold text-[#e2e8f0] mb-2">
-                Data Science Expertise
-              </h3>
-              <p className="text-[#94a3b8] max-w-md">
-                Specialized in exploratory data analysis, feature engineering, and data visualization
-              </p>
-            </div>
-            <div className="flex flex-wrap justify-center gap-3">
-              {["EDA", "Feature Engineering", "Data Cleaning", "Visualization", "Statistical Analysis"].map(
-                (skill, i) => (
+        {/* Expertise Banner */}
+        {skillsSection.banner.enabled && (
+          <div className="mt-16 glass-card rounded-3xl p-8 md:p-10 relative overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-r from-[#00e5ff]/5 via-[#3b82f6]/5 to-[#8b5cf6]/5" />
+            
+            <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8">
+              <div className="text-center md:text-left">
+                <h3 className="text-2xl font-bold text-[#e2e8f0] mb-2">
+                  {skillsSection.banner.title}
+                </h3>
+                <p className="text-[#94a3b8] max-w-md">
+                  {skillsSection.banner.description}
+                </p>
+              </div>
+              <div className="flex flex-wrap justify-center gap-3">
+                {skillsSection.banner.tags.map((skill, i) => (
                   <span
                     key={i}
                     className="px-4 py-2 rounded-xl text-sm font-mono bg-gradient-to-r from-[#00e5ff]/10 to-[#3b82f6]/10 text-[#00e5ff] border border-[#00e5ff]/20 hover:border-[#00e5ff]/40 transition-colors cursor-default"
                   >
                     {skill}
                   </span>
-                )
-              )}
+                ))}
+              </div>
             </div>
           </div>
-        </div>
+        )}
       </div>
     </section>
   )

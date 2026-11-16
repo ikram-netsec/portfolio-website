@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next'
 import { Inter, Space_Grotesk } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
+import { profile, seo } from '@/lib/portfolio-data'
 
 const inter = Inter({ 
   subsets: ["latin"],
@@ -16,22 +17,22 @@ const spaceGrotesk = Space_Grotesk({
 });
 
 export const metadata: Metadata = {
-  title: 'Muhammad Mujeeb Ur Rahman | AI Engineer',
-  description: 'AI Engineer specializing in LLM systems, RAG pipelines, AI agents, and machine learning. Building intelligent systems that think, learn, and automate.',
-  keywords: ['AI Engineer', 'Machine Learning', 'LLM', 'RAG Systems', 'AI Agents', 'Deep Learning', 'Python', 'LangChain'],
-  authors: [{ name: 'Muhammad Mujeeb Ur Rahman' }],
-  creator: 'Muhammad Mujeeb Ur Rahman',
+  title: seo.title,
+  description: seo.description,
+  keywords: seo.keywords,
+  authors: [{ name: profile.fullName }],
+  creator: profile.fullName,
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    title: 'Muhammad Mujeeb Ur Rahman | AI Engineer',
-    description: 'AI Engineer specializing in LLM systems, RAG pipelines, AI agents, and machine learning.',
-    siteName: 'Mujeeb Rahman Portfolio',
+    title: seo.title,
+    description: seo.shortDescription,
+    siteName: seo.siteName,
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Muhammad Mujeeb Ur Rahman | AI Engineer',
-    description: 'AI Engineer specializing in LLM systems, RAG pipelines, AI agents, and machine learning.',
+    title: seo.title,
+    description: seo.shortDescription,
   },
   robots: {
     index: true,

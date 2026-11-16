@@ -3,16 +3,7 @@
 import { useState, useEffect } from "react"
 import { Menu, X, Download } from "lucide-react"
 import { Button } from "@/components/ui/button"
-
-const navLinks = [
-  { name: "Home", href: "#home" },
-  { name: "About", href: "#about" },
-  { name: "Experience", href: "#experience" },
-  { name: "Skills", href: "#skills" },
-  { name: "Services", href: "#services" },
-  { name: "Projects", href: "#projects" },
-  { name: "Contact", href: "#contact" },
-]
+import { navLinks, profile } from "@/lib/portfolio-data"
 
 export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false)
@@ -39,10 +30,10 @@ export function Navbar() {
           {/* Logo */}
           <a href="#home" className="flex items-center gap-2 group">
             <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-[#00e5ff] to-[#3b82f6] flex items-center justify-center">
-              <span className="text-[#05070d] font-bold text-lg font-mono">M</span>
+              <span className="text-[#05070d] font-bold text-lg font-mono">{profile.logoText}</span>
             </div>
             <span className="text-[#cbd5e1] font-semibold text-lg hidden sm:block group-hover:text-[#00e5ff] transition-colors">
-              Mujeeb
+              {profile.shortName}
             </span>
           </a>
 
@@ -66,7 +57,7 @@ export function Navbar() {
               asChild
               className="bg-gradient-to-r from-[#00e5ff] to-[#3b82f6] text-[#05070d] font-semibold hover:shadow-lg hover:shadow-[#00e5ff]/25 transition-all duration-300"
             >
-              <a href="/resume.pdf" target="_blank" rel="noopener noreferrer">
+              <a href={profile.resumeUrl} target="_blank" rel="noopener noreferrer">
                 <Download className="w-4 h-4 mr-2" />
                 Download CV
               </a>
@@ -105,7 +96,7 @@ export function Navbar() {
             asChild
             className="w-full mt-4 bg-gradient-to-r from-[#00e5ff] to-[#3b82f6] text-[#05070d] font-semibold"
           >
-            <a href="/resume.pdf" target="_blank" rel="noopener noreferrer">Download CV</a>
+            <a href={profile.resumeUrl} target="_blank" rel="noopener noreferrer">Download CV</a>
           </Button>
         </div>
       </div>

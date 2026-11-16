@@ -2,58 +2,13 @@
 
 import { useState } from "react"
 import { Building2, Calendar, ChevronRight, Briefcase, ArrowRight } from "lucide-react"
-
-const experiences = [
-  {
-    title: "Generative & Agentic AI Engineer Intern",
-    company: "NCAI, UET Peshawar",
-    period: "Dec 2025 - Feb 2026",
-    description: "Built LLM-based AI agents and RAG pipelines for intelligent automation systems.",
-    highlights: [
-      "Developed multi-agent systems using LangChain and LangGraph",
-      "Implemented RAG pipelines with vector databases",
-      "Created automation workflows using n8n",
-      "Built conversational AI assistants with memory persistence",
-    ],
-    technologies: ["LangChain", "LangGraph", "RAG", "n8n", "Vector DBs"],
-    color: "#00e5ff",
-    gradient: "from-[#00e5ff] to-[#06b6d4]",
-  },
-  {
-    title: "Machine Learning Engineer Intern",
-    company: "ITSolera Pvt. Ltd.",
-    period: "Feb 2026 - Mar 2026",
-    description: "Developed deep learning models and ML-powered applications.",
-    highlights: [
-      "Built recommendation systems using collaborative filtering",
-      "Developed CNN-based image classification models",
-      "Deployed ML applications using Streamlit",
-      "Implemented end-to-end ML pipelines",
-    ],
-    technologies: ["TensorFlow", "Keras", "Scikit-learn", "Streamlit", "CNNs"],
-    color: "#3b82f6",
-    gradient: "from-[#3b82f6] to-[#6366f1]",
-  },
-  {
-    title: "Data Science Intern",
-    company: "ITSolera Pvt. Ltd.",
-    period: "Jul 2025 - Aug 2025",
-    description: "Focused on data analysis, visualization, and preprocessing pipelines.",
-    highlights: [
-      "Performed exploratory data analysis on large datasets",
-      "Built data cleaning and preprocessing pipelines",
-      "Created interactive data visualizations",
-      "Developed feature engineering strategies",
-    ],
-    technologies: ["Python", "Pandas", "NumPy", "Matplotlib", "Seaborn"],
-    color: "#8b5cf6",
-    gradient: "from-[#8b5cf6] to-[#a855f7]",
-  },
-]
+import { experiences, experienceSection } from "@/lib/portfolio-data"
 
 export function Experience() {
   const [activeIndex, setActiveIndex] = useState(0)
   const activeExp = experiences[activeIndex]
+
+  if (!experienceSection.enabled || experiences.length === 0) return null
 
   return (
     <section id="experience" className="relative py-24 md:py-36 overflow-hidden">
@@ -86,7 +41,7 @@ export function Experience() {
             </span>
           </h2>
           <p className="text-[#94a3b8] max-w-2xl mx-auto text-lg">
-            Building real-world AI systems across multiple organizations
+            {experienceSection.subtitle}
           </p>
         </div>
 

@@ -1,90 +1,14 @@
 "use client"
 
 import { useState } from "react"
-import { MessageSquareCode, BrainCircuit, Bot, Rocket, ArrowRight, Lightbulb, Cog, BarChart3 } from "lucide-react"
+import { Rocket, ArrowRight, Cog } from "lucide-react"
 import { Button } from "@/components/ui/button"
-
-const services = [
-  {
-    icon: MessageSquareCode,
-    title: "LLM Application Development",
-    description: "Custom chatbots, AI assistants, and RAG-based question-answering systems that leverage the power of large language models.",
-    features: [
-      "Conversational AI chatbots",
-      "Document Q&A systems",
-      "RAG pipeline implementation",
-      "Custom LLM integrations",
-    ],
-    color: "#00e5ff",
-    gradient: "from-[#00e5ff] to-[#06b6d4]",
-  },
-  {
-    icon: BrainCircuit,
-    title: "Machine Learning Models",
-    description: "End-to-end ML solutions for classification, prediction, and recommendation systems tailored to your business needs.",
-    features: [
-      "Predictive analytics",
-      "Recommendation engines",
-      "Classification models",
-      "Time series forecasting",
-    ],
-    color: "#3b82f6",
-    gradient: "from-[#3b82f6] to-[#6366f1]",
-  },
-  {
-    icon: Bot,
-    title: "AI Automation Systems",
-    description: "Intelligent agents and workflow automation using LangChain and n8n to streamline your business processes.",
-    features: [
-      "Multi-agent systems",
-      "Workflow automation",
-      "Task orchestration",
-      "Process optimization",
-    ],
-    color: "#8b5cf6",
-    gradient: "from-[#8b5cf6] to-[#a855f7]",
-  },
-  {
-    icon: Rocket,
-    title: "AI Product Prototyping",
-    description: "Rapid MVP development with Streamlit dashboards and interactive demos to validate your AI product ideas.",
-    features: [
-      "Streamlit dashboards",
-      "Interactive demos",
-      "Proof of concept",
-      "MVP development",
-    ],
-    color: "#10b981",
-    gradient: "from-[#10b981] to-[#14b8a6]",
-  },
-]
-
-const processSteps = [
-  {
-    step: "01",
-    title: "Business Planning",
-    description: "Understanding your requirements, goals, and defining the scope of the AI solution.",
-    icon: Lightbulb,
-    color: "#00e5ff",
-  },
-  {
-    step: "02",
-    title: "Design Strategy",
-    description: "Architecting the system, selecting technologies, and planning the implementation approach.",
-    icon: Cog,
-    color: "#3b82f6",
-  },
-  {
-    step: "03",
-    title: "Grow Your Business",
-    description: "Deploying the solution, monitoring performance, and iterating for continuous improvement.",
-    icon: BarChart3,
-    color: "#8b5cf6",
-  },
-]
+import { processSteps, services, servicesSection } from "@/lib/portfolio-data"
 
 export function Services() {
   const [hoveredService, setHoveredService] = useState<number | null>(null)
+
+  if (!servicesSection.enabled || services.length === 0) return null
 
   return (
     <section id="services" className="relative py-24 md:py-36 overflow-hidden">
@@ -120,7 +44,7 @@ export function Services() {
             </span>
           </h2>
           <p className="text-[#94a3b8] max-w-2xl mx-auto text-lg">
-            Specialized AI and ML services to transform your ideas into intelligent solutions
+            {servicesSection.subtitle}
           </p>
         </div>
 
@@ -197,12 +121,15 @@ export function Services() {
 
                   {/* CTA */}
                   <Button
+                    asChild
                     variant="ghost"
                     className="group/btn p-0 h-auto text-sm font-medium hover:bg-transparent"
                     style={{ color: service.color }}
                   >
-                    Learn More
-                    <ArrowRight className="w-4 h-4 ml-2 group-hover/btn:translate-x-2 transition-transform duration-300" />
+                    <a href="#contact">
+                      Learn More
+                      <ArrowRight className="w-4 h-4 ml-2 group-hover/btn:translate-x-2 transition-transform duration-300" />
+                    </a>
                   </Button>
                 </div>
 
@@ -219,69 +146,71 @@ export function Services() {
         </div>
 
         {/* Process Section */}
-        <div>
-          <div className="text-center mb-16">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card mb-4">
-              <Cog className="w-4 h-4 text-[#00e5ff]" />
-              <span className="text-[#00e5ff] font-mono text-sm tracking-widest uppercase">Process</span>
+        {servicesSection.showProcess && (
+          <div>
+            <div className="text-center mb-16">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card mb-4">
+                <Cog className="w-4 h-4 text-[#00e5ff]" />
+                <span className="text-[#00e5ff] font-mono text-sm tracking-widest uppercase">Process</span>
+              </div>
+              <h3 className="text-3xl md:text-4xl font-bold text-[#e2e8f0]">My Working Process</h3>
             </div>
-            <h3 className="text-3xl md:text-4xl font-bold text-[#e2e8f0]">My Working Process</h3>
-          </div>
 
-          {/* Process Steps */}
-          <div className="relative">
-            {/* Connection Line */}
-            <div className="hidden lg:block absolute top-1/2 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#1e293b] to-transparent -translate-y-1/2" />
+            {/* Process Steps */}
+            <div className="relative">
+              {/* Connection Line */}
+              <div className="hidden lg:block absolute top-1/2 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#1e293b] to-transparent -translate-y-1/2" />
 
-            <div className="grid md:grid-cols-3 gap-8 lg:gap-12">
-              {processSteps.map((process, index) => {
-                const Icon = process.icon
-                return (
-                  <div key={index} className="text-center group relative">
-                    {/* Step Number Background */}
-                    <div className="relative inline-block mb-8">
-                      <div
-                        className="w-24 h-24 rounded-3xl mx-auto flex items-center justify-center glass-card transition-all duration-500 group-hover:scale-110 relative overflow-hidden"
-                        style={{ borderColor: `${process.color}20` }}
-                      >
-                        {/* Glow */}
+              <div className="grid md:grid-cols-3 gap-8 lg:gap-12">
+                {processSteps.map((process, index) => {
+                  const Icon = process.icon
+                  return (
+                    <div key={index} className="text-center group relative">
+                      {/* Step Number Background */}
+                      <div className="relative inline-block mb-8">
                         <div
-                          className="absolute inset-0 opacity-0 group-hover:opacity-20 transition-opacity duration-500"
-                          style={{ backgroundColor: process.color }}
-                        />
-                        
-                        {/* Icon */}
-                        <Icon className="w-10 h-10 relative z-10" style={{ color: process.color }} />
+                          className="w-24 h-24 rounded-3xl mx-auto flex items-center justify-center glass-card transition-all duration-500 group-hover:scale-110 relative overflow-hidden"
+                          style={{ borderColor: `${process.color}20` }}
+                        >
+                          {/* Glow */}
+                          <div
+                            className="absolute inset-0 opacity-0 group-hover:opacity-20 transition-opacity duration-500"
+                            style={{ backgroundColor: process.color }}
+                          />
+                          
+                          {/* Icon */}
+                          <Icon className="w-10 h-10 relative z-10" style={{ color: process.color }} />
+                        </div>
+
+                        {/* Step Badge */}
+                        <div
+                          className="absolute -top-2 -right-2 w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold"
+                          style={{
+                            background: `linear-gradient(135deg, ${process.color}, ${process.color}80)`,
+                            color: "#05070d",
+                          }}
+                        >
+                          {process.step}
+                        </div>
                       </div>
 
-                      {/* Step Badge */}
-                      <div
-                        className="absolute -top-2 -right-2 w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold"
-                        style={{
-                          background: `linear-gradient(135deg, ${process.color}, ${process.color}80)`,
-                          color: "#05070d",
-                        }}
-                      >
-                        {process.step}
-                      </div>
+                      {/* Content */}
+                      <h4 className="text-xl font-semibold text-[#e2e8f0] mb-3">{process.title}</h4>
+                      <p className="text-[#94a3b8] leading-relaxed max-w-xs mx-auto">{process.description}</p>
+
+                      {/* Arrow (hidden on last item) */}
+                      {index < processSteps.length - 1 && (
+                        <div className="hidden lg:flex absolute top-12 -right-6 transform translate-x-1/2">
+                          <ArrowRight className="w-6 h-6 text-[#1e293b]" />
+                        </div>
+                      )}
                     </div>
-
-                    {/* Content */}
-                    <h4 className="text-xl font-semibold text-[#e2e8f0] mb-3">{process.title}</h4>
-                    <p className="text-[#94a3b8] leading-relaxed max-w-xs mx-auto">{process.description}</p>
-
-                    {/* Arrow (hidden on last item) */}
-                    {index < processSteps.length - 1 && (
-                      <div className="hidden lg:flex absolute top-12 -right-6 transform translate-x-1/2">
-                        <ArrowRight className="w-6 h-6 text-[#1e293b]" />
-                      </div>
-                    )}
-                  </div>
-                )
-              })}
+                  )
+                })}
+              </div>
             </div>
           </div>
-        </div>
+        )}
       </div>
     </section>
   )

@@ -2,19 +2,12 @@
 
 import { useState, useEffect } from "react"
 import { Github, Linkedin, Mail, Heart } from "lucide-react"
-
-const footerLinks = [
-  { name: "Home", href: "#home" },
-  { name: "About", href: "#about" },
-  { name: "Services", href: "#services" },
-  { name: "Projects", href: "#projects" },
-  { name: "Contact", href: "#contact" },
-]
+import { navLinks, profile, socials } from "@/lib/portfolio-data"
 
 const socialLinks = [
-  { icon: Github, href: "https://github.com/Engr-Mujeeb-Rahman", label: "GitHub" },
-  { icon: Linkedin, href: "https://www.linkedin.com/in/muhammad-mujeeb-ur-rahman-se/", label: "LinkedIn" },
-  { icon: Mail, href: "mailto:mujeebbadwan1155@gmail.com", label: "Email" },
+  { icon: Github, href: socials.github.href, label: socials.github.label },
+  { icon: Linkedin, href: socials.linkedin.href, label: socials.linkedin.label },
+  { icon: Mail, href: socials.email.href, label: socials.email.label },
 ]
 
 export function Footer() {
@@ -35,14 +28,14 @@ export function Footer() {
           {/* Logo */}
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-[#00e5ff] to-[#3b82f6] flex items-center justify-center">
-              <span className="text-[#05070d] font-bold text-lg font-mono">M</span>
+              <span className="text-[#05070d] font-bold text-lg font-mono">{profile.logoText}</span>
             </div>
-            <span className="text-[#cbd5e1] font-semibold text-lg">Mujeeb</span>
+            <span className="text-[#cbd5e1] font-semibold text-lg">{profile.shortName}</span>
           </div>
 
           {/* Navigation Links */}
           <nav className="flex flex-wrap justify-center gap-6">
-            {footerLinks.map((link) => (
+            {navLinks.map((link) => (
               <a
                 key={link.name}
                 href={link.href}
@@ -57,12 +50,13 @@ export function Footer() {
           <div className="flex gap-3">
             {socialLinks.map((social, index) => {
               const Icon = social.icon
+              const isExternal = social.href.startsWith("http")
               return (
                 <a
                   key={index}
                   href={social.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  target={isExternal ? "_blank" : undefined}
+                  rel={isExternal ? "noopener noreferrer" : undefined}
                   className="w-10 h-10 rounded-lg glass-card flex items-center justify-center text-[#cbd5e1]/60 hover:text-[#00e5ff] hover:border-[#00e5ff]/30 transition-all"
                   aria-label={social.label}
                 >
@@ -79,10 +73,10 @@ export function Footer() {
         {/* Copyright */}
         <div className="flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-[#cbd5e1]/50">
           <p>
-            &copy; Copyright 2023 – {currentYear} All Rights Reserved.
+            &copy; Copyright {profile.copyrightStartYear} – {currentYear} All Rights Reserved.
           </p>
           <p className="flex items-center gap-1">
-            Made with <Heart className="w-4 h-4 text-[#ef4444]" /> by Muhammad Mujeeb Ur Rahman
+            Made with <Heart className="w-4 h-4 text-[#ef4444]" /> by {profile.fullName}
           </p>
         </div>
       </div>

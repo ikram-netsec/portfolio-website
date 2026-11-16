@@ -1,26 +1,14 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
-import { ArrowRight, Download, Github, Linkedin, Mail, Sparkles, Terminal, Zap, Brain, Bot, ChevronDown } from "lucide-react"
+import { ArrowRight, Download, Github, Linkedin, Mail, Sparkles, Terminal, Shield, ChevronDown } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
+import { hero, heroStatIcons, profile, socials } from "@/lib/portfolio-data"
 
-const roles = [
-  "AI Engineer",
-  "LLM Specialist", 
-  "ML Developer",
-  "RAG Architect",
-  "AI Agent Builder"
-]
-
-const techStack = [
-  { name: "Python", icon: "🐍" },
-  { name: "LangChain", icon: "🦜" },
-  { name: "PyTorch", icon: "🔥" },
-  { name: "FastAPI", icon: "⚡" },
-  { name: "OpenAI", icon: "🤖" },
-  { name: "RAG", icon: "📚" },
-]
+const roles = hero.roles
+const techStack = hero.techStack
+const statColors = ["#00e5ff", "#3b82f6", "#8b5cf6"]
 
 export function Hero() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
@@ -217,14 +205,16 @@ export function Hero() {
           {/* Text Content */}
           <div className="lg:col-span-7 text-center lg:text-left">
             {/* Status Badge */}
-            <div className="inline-flex items-center gap-3 px-5 py-2.5 rounded-full glass-card mb-8 group hover:glow-cyan cursor-default">
-              <span className="relative flex h-2.5 w-2.5">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#10b981] opacity-75" />
-                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#10b981]" />
-              </span>
-              <span className="text-sm text-[#cbd5e1]/80 font-medium">Open to AI/ML Opportunities</span>
-              <Sparkles className="w-4 h-4 text-[#f59e0b] animate-pulse" />
-            </div>
+            {profile.statusBadge && (
+              <div className="inline-flex items-center gap-3 px-5 py-2.5 rounded-full glass-card mb-8 group hover:glow-cyan cursor-default">
+                <span className="relative flex h-2.5 w-2.5">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#10b981] opacity-75" />
+                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#10b981]" />
+                </span>
+                <span className="text-sm text-[#cbd5e1]/80 font-medium">{profile.statusBadge}</span>
+                <Sparkles className="w-4 h-4 text-[#f59e0b] animate-pulse" />
+              </div>
+            )}
 
             {/* Pre-heading */}
             <p className="text-[#00e5ff] font-mono text-sm md:text-base mb-4 flex items-center justify-center lg:justify-start gap-2">
@@ -234,8 +224,8 @@ export function Hero() {
 
             {/* Main Heading */}
             <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-4">
-              <span className="text-[#cbd5e1] block">Muhammad</span>
-              <span className="text-gradient block mt-1">Mujeeb Ur Rahman</span>
+              <span className="text-[#cbd5e1] block">{profile.nameLine1}</span>
+              <span className="text-gradient block mt-1">{profile.nameLine2}</span>
             </h1>
 
             {/* Animated Role */}
@@ -250,41 +240,31 @@ export function Hero() {
 
             {/* Description */}
             <p className="text-base md:text-lg text-[#cbd5e1]/70 max-w-2xl mx-auto lg:mx-0 mb-8 leading-relaxed">
-              Building intelligent systems that <span className="text-[#00e5ff] font-medium">think</span>, 
-              <span className="text-[#3b82f6] font-medium"> learn</span>, and 
-              <span className="text-[#8b5cf6] font-medium"> automate</span>. Specializing in production-ready 
-              RAG pipelines, autonomous AI agents, and enterprise LLM solutions.
+              {hero.taglineIntro} <span className="text-[#00e5ff] font-medium">{hero.taglineWords[0]}</span>,{" "}
+              <span className="text-[#3b82f6] font-medium">{hero.taglineWords[1]}</span>, and{" "}
+              <span className="text-[#8b5cf6] font-medium">{hero.taglineWords[2]}</span>. {hero.taglineOutro}
             </p>
 
             {/* Stats Row */}
             <div className="flex flex-wrap gap-6 justify-center lg:justify-start mb-8">
-              <div className="flex items-center gap-2">
-                <div className="w-10 h-10 rounded-lg bg-[#00e5ff]/10 flex items-center justify-center">
-                  <Zap className="w-5 h-5 text-[#00e5ff]" />
-                </div>
-                <div>
-                  <p className="text-xl font-bold text-[#cbd5e1]">25+</p>
-                  <p className="text-xs text-[#64748b]">Projects</p>
-                </div>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="w-10 h-10 rounded-lg bg-[#3b82f6]/10 flex items-center justify-center">
-                  <Brain className="w-5 h-5 text-[#3b82f6]" />
-                </div>
-                <div>
-                  <p className="text-xl font-bold text-[#cbd5e1]">2+</p>
-                  <p className="text-xs text-[#64748b]">Years Exp</p>
-                </div>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="w-10 h-10 rounded-lg bg-[#8b5cf6]/10 flex items-center justify-center">
-                  <Bot className="w-5 h-5 text-[#8b5cf6]" />
-                </div>
-                <div>
-                  <p className="text-xl font-bold text-[#cbd5e1]">5+</p>
-                  <p className="text-xs text-[#64748b]">AI Agents</p>
-                </div>
-              </div>
+              {hero.stats.map((stat, i) => {
+                const Icon = heroStatIcons[i % heroStatIcons.length]
+                const color = statColors[i % statColors.length]
+                return (
+                  <div key={stat.label} className="flex items-center gap-2">
+                    <div
+                      className="w-10 h-10 rounded-lg flex items-center justify-center"
+                      style={{ backgroundColor: `${color}1a` }}
+                    >
+                      <Icon className="w-5 h-5" style={{ color }} />
+                    </div>
+                    <div>
+                      <p className="text-xl font-bold text-[#cbd5e1]">{stat.value}</p>
+                      <p className="text-xs text-[#64748b]">{stat.label}</p>
+                    </div>
+                  </div>
+                )
+              })}
             </div>
 
             {/* CTA Buttons */}
@@ -308,7 +288,7 @@ export function Hero() {
                 variant="outline"
                 className="border-[#00e5ff]/30 text-[#00e5ff] hover:bg-[#00e5ff]/10 hover:border-[#00e5ff]/50 px-8 py-6 text-base transition-all duration-300 group"
               >
-                <a href="/resume.pdf" target="_blank" rel="noopener noreferrer">
+                <a href={profile.resumeUrl} target="_blank" rel="noopener noreferrer">
                   <Download className="w-5 h-5 mr-2 group-hover:animate-bounce" />
                   Download CV
                 </a>
@@ -321,9 +301,9 @@ export function Hero() {
               <div className="h-px w-8 bg-gradient-to-r from-[#00e5ff]/50 to-transparent" />
               <div className="flex gap-3">
                 {[
-                  { icon: Github, href: "https://github.com/Engr-Mujeeb-Rahman", label: "GitHub" },
-                  { icon: Linkedin, href: "https://www.linkedin.com/in/muhammad-mujeeb-ur-rahman-se/", label: "LinkedIn" },
-                  { icon: Mail, href: "mailto:mujeebbadwan1155@gmail.com", label: "Email" },
+                  { icon: Github, href: socials.github.href, label: "GitHub" },
+                  { icon: Linkedin, href: socials.linkedin.href, label: "LinkedIn" },
+                  { icon: Mail, href: socials.email.href, label: "Email" },
                 ].map(({ icon: Icon, href, label }) => (
                   <a
                     key={label}
@@ -357,7 +337,7 @@ export function Hero() {
                   <div className="w-3 h-3 rounded-full bg-[#ef4444]" />
                   <div className="w-3 h-3 rounded-full bg-[#f59e0b]" />
                   <div className="w-3 h-3 rounded-full bg-[#10b981]" />
-                  <span className="ml-3 text-xs text-[#64748b] font-mono">mujeeb@ai-engineer:~</span>
+                  <span className="ml-3 text-xs text-[#64748b] font-mono">{profile.terminalUser}</span>
                 </div>
 
                 {/* Profile Section */}
@@ -366,8 +346,8 @@ export function Hero() {
                     <div className="w-32 h-32 rounded-full bg-gradient-to-br from-[#00e5ff] via-[#3b82f6] to-[#8b5cf6] p-1 animate-float">
                       <div className="w-full h-full rounded-full overflow-hidden ring-2 ring-[#0b1020]">
                         <Image
-                          src="https://i.postimg.cc/X7GStWYc/Mujeeb-professional.jpg"
-                          alt="Muhammad Mujeeb Ur Rahman"
+                          src={profile.photo}
+                          alt={profile.fullName}
                           width={128}
                           height={128}
                           className="w-full h-full object-cover"
@@ -379,8 +359,8 @@ export function Hero() {
                       <Sparkles className="w-4 h-4 text-white" />
                     </div>
                   </div>
-                  <h3 className="text-lg font-semibold text-[#cbd5e1]">Muhammad Mujeeb</h3>
-                  <p className="text-sm text-[#00e5ff] font-mono">@ai_engineer</p>
+                  <h3 className="text-lg font-semibold text-[#cbd5e1]">{profile.cardName}</h3>
+                  <p className="text-sm text-[#00e5ff] font-mono">{profile.handle}</p>
                 </div>
 
                 {/* Tech Stack */}
@@ -406,18 +386,18 @@ export function Hero() {
                     <span className="text-[#c678dd]">const</span>{" "}
                     <span className="text-[#e5c07b]">mission</span>{" "}
                     <span className="text-[#56b6c2]">=</span>{" "}
-                    <span className="text-[#98c379]">{'"Build AI that'}</span>
+                    <span className="text-[#98c379]">{`"${hero.missionLine1}`}</span>
                   </p>
                   <p className="ml-4">
-                    <span className="text-[#98c379]">{'transforms industries"'}</span>;
+                    <span className="text-[#98c379]">{`${hero.missionLine2}"`}</span>;
                   </p>
                 </div>
 
                 {/* Floating Badge */}
                 <div className="absolute -top-4 -right-4 px-4 py-2 rounded-xl glass-card glow-cyan">
-                  <p className="text-sm font-bold text-[#00e5ff] flex items-center gap-1">
-                    <Brain className="w-4 h-4" />
-                    AI/ML
+                  <p className="text-xs sm:text-sm font-bold text-[#00e5ff] flex items-center gap-1.5 whitespace-nowrap">
+                    <Shield className="w-4 h-4 shrink-0" />
+                    {hero.badge}
                   </p>
                 </div>
               </div>

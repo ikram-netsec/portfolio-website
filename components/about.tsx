@@ -1,22 +1,11 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
-import { GraduationCap, Brain, Cpu, Workflow, CheckCircle2, Sparkles, Target, Zap } from "lucide-react"
+import { GraduationCap, ShieldCheck, CheckCircle2, Target, Zap } from "lucide-react"
+import { about, profile } from "@/lib/portfolio-data"
 
-const focusAreas = [
-  { text: "LLM applications & RAG systems", icon: Brain },
-  { text: "AI agents & autonomous systems", icon: Cpu },
-  { text: "Machine learning & deep learning", icon: Sparkles },
-  { text: "Data-driven automation workflows", icon: Workflow },
-  { text: "Production-ready AI deployment", icon: Target },
-]
-
-const stats = [
-  { value: 25, suffix: "+", label: "Completed Projects", color: "#00e5ff" },
-  { value: 3.75, suffix: "", label: "CGPA", color: "#3b82f6" },
-  { value: 2, suffix: " years+", label: "Experience", color: "#8b5cf6" },
-  { value: 10, suffix: "+", label: "Technologies", color: "#10b981" },
-]
+const focusAreas = about.focusAreas
+const stats = about.stats
 
 function AnimatedCounter({ value, suffix, duration = 2000 }: { value: number; suffix: string; duration?: number }) {
   const [count, setCount] = useState(0)
@@ -73,18 +62,14 @@ export function About() {
   }, [])
 
   // Node positions for client-side rendering
-  const nodePositions = isClient ? [
-    { icon: Cpu, angle: 0, delay: "0s", color: "#00e5ff" },
-    { icon: Workflow, angle: 72, delay: "0.5s", color: "#3b82f6" },
-    { icon: GraduationCap, angle: 144, delay: "1s", color: "#8b5cf6" },
-    { icon: Sparkles, angle: 216, delay: "1.5s", color: "#10b981" },
-    { icon: Target, angle: 288, delay: "2s", color: "#f59e0b" },
-  ].map((node) => {
+  const orbitColors = ["#00e5ff", "#3b82f6", "#8b5cf6", "#10b981", "#f59e0b"]
+  const nodePositions = isClient ? about.orbitIcons.map((icon, i, arr) => {
+    const angle = (360 / arr.length) * i
     const radius = 140
-    const radian = (node.angle * Math.PI) / 180
+    const radian = (angle * Math.PI) / 180
     const x = Math.cos(radian) * radius
     const y = Math.sin(radian) * radius
-    return { ...node, x, y }
+    return { icon, delay: `${i * 0.5}s`, color: orbitColors[i % orbitColors.length], x, y }
   }) : []
 
   return (
@@ -115,14 +100,14 @@ export function About() {
             <span className="text-[#00e5ff] font-mono text-sm tracking-widest uppercase">About Me</span>
           </div>
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-[#e2e8f0] mb-6 leading-tight">
-            Designing Solutions,
+            {about.headingLine1}
             <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00e5ff] via-[#3b82f6] to-[#8b5cf6]">
-              Not Just Visuals
+              {about.headingLine2}
             </span>
           </h2>
           <p className="text-[#94a3b8] max-w-2xl mx-auto text-lg">
-            Building production-ready AI systems that solve real-world problems
+            {about.subtitle}
           </p>
         </div>
 
@@ -150,7 +135,7 @@ export function About() {
                     <div className="relative">
                       <div className="absolute inset-0 w-28 h-28 rounded-2xl bg-gradient-to-br from-[#00e5ff] to-[#3b82f6] blur-xl opacity-50 animate-pulse" />
                       <div className="relative w-28 h-28 rounded-2xl bg-gradient-to-br from-[#00e5ff] to-[#3b82f6] flex items-center justify-center shadow-2xl shadow-[#00e5ff]/20">
-                        <Brain className="w-14 h-14 text-[#05070d]" />
+                        <ShieldCheck className="w-14 h-14 text-[#05070d]" />
                       </div>
                     </div>
                   </div>
@@ -204,7 +189,7 @@ export function About() {
               {!isClient && (
                 <div className="relative aspect-square max-w-md mx-auto flex items-center justify-center">
                   <div className="w-28 h-28 rounded-2xl bg-gradient-to-br from-[#00e5ff]/20 to-[#3b82f6]/20 flex items-center justify-center">
-                    <Brain className="w-14 h-14 text-[#00e5ff]" />
+                    <ShieldCheck className="w-14 h-14 text-[#00e5ff]" />
                   </div>
                 </div>
               )}
@@ -236,40 +221,42 @@ export function About() {
             {/* Bio */}
             <div className="mb-8">
               <p className="text-xl text-[#e2e8f0] mb-6 leading-relaxed">
-                I&apos;m <span className="text-[#00e5ff] font-semibold">Muhammad Mujeeb Ur Rahman</span>, 
-                an AI Engineer and BS Software Engineering student at the University of Malakand. 
-                I specialize in building end-to-end intelligent systems that go beyond traditional 
-                machine learning models.
+                I&apos;m <span className="text-[#00e5ff] font-semibold">{profile.fullName}</span>, {about.bioIntro}
               </p>
               
               <p className="text-[#94a3b8] leading-relaxed">
-                My expertise lies in LLM-based applications, Retrieval-Augmented Generation (RAG) systems, 
-                AI agents, and data-driven automation. I focus on creating practical, production-ready 
-                AI solutions that deliver real business value.
+                {about.bioSecondary}
               </p>
             </div>
 
-            {/* Education Card */}
-            <div className="glass-card rounded-2xl p-6 mb-8 group hover:border-[#00e5ff]/30 transition-all duration-300">
-              <div className="flex items-start gap-5">
-                <div className="relative">
-                  <div className="absolute inset-0 bg-gradient-to-br from-[#00e5ff] to-[#3b82f6] rounded-xl blur-lg opacity-30 group-hover:opacity-50 transition-opacity" />
-                  <div className="relative w-14 h-14 rounded-xl bg-gradient-to-br from-[#00e5ff]/20 to-[#3b82f6]/20 flex items-center justify-center">
-                    <GraduationCap className="w-7 h-7 text-[#00e5ff]" />
+            {/* Education Cards */}
+            {about.education.map((edu) => (
+              <div
+                key={`${edu.degree}-${edu.institution}`}
+                className="glass-card rounded-2xl p-6 mb-8 group hover:border-[#00e5ff]/30 transition-all duration-300"
+              >
+                <div className="flex items-start gap-5">
+                  <div className="relative">
+                    <div className="absolute inset-0 bg-gradient-to-br from-[#00e5ff] to-[#3b82f6] rounded-xl blur-lg opacity-30 group-hover:opacity-50 transition-opacity" />
+                    <div className="relative w-14 h-14 rounded-xl bg-gradient-to-br from-[#00e5ff]/20 to-[#3b82f6]/20 flex items-center justify-center">
+                      <GraduationCap className="w-7 h-7 text-[#00e5ff]" />
+                    </div>
                   </div>
-                </div>
-                <div className="flex-1">
-                  <h3 className="text-lg font-semibold text-[#e2e8f0] mb-1">BS Software Engineering</h3>
-                  <p className="text-[#94a3b8] mb-2">University of Malakand</p>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm text-[#64748b]">2023 - 2027</span>
-                    <span className="px-3 py-1 rounded-full text-sm font-mono bg-[#00e5ff]/10 text-[#00e5ff] border border-[#00e5ff]/20">
-                      CGPA: 3.75
-                    </span>
+                  <div className="flex-1">
+                    <h3 className="text-lg font-semibold text-[#e2e8f0] mb-1">{edu.degree}</h3>
+                    <p className="text-[#94a3b8] mb-2">{edu.institution}</p>
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm text-[#64748b]">{edu.period}</span>
+                      {edu.grade && (
+                        <span className="px-3 py-1 rounded-full text-sm font-mono bg-[#00e5ff]/10 text-[#00e5ff] border border-[#00e5ff]/20">
+                          {edu.grade}
+                        </span>
+                      )}
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
+            ))}
 
             {/* Focus Areas */}
             <div>

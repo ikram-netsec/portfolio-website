@@ -6,31 +6,32 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { useState } from "react"
 import emailjs from "@emailjs/browser"
+import { contactSection, profile, socials } from "@/lib/portfolio-data"
 
 const contactInfo = [
   {
     icon: Mail,
-    label: "Email",
-    value: "mujeebbadwan1155@gmail.com",
-    href: "mailto:mujeebbadwan1155@gmail.com",
+    label: socials.email.label,
+    value: socials.email.display,
+    href: socials.email.href,
   },
   {
     icon: Github,
-    label: "GitHub",
-    value: "Engr-Mujeeb-Rahman",
-    href: "https://github.com/Engr-Mujeeb-Rahman",
+    label: socials.github.label,
+    value: socials.github.display,
+    href: socials.github.href,
   },
   {
     icon: Linkedin,
-    label: "LinkedIn",
-    value: "Muhammad Mujeeb Ur Rahman",
-    href: "https://www.linkedin.com/in/muhammad-mujeeb-ur-rahman-se/",
+    label: socials.linkedin.label,
+    value: socials.linkedin.display,
+    href: socials.linkedin.href,
   },
   {
     icon: MapPin,
     label: "Location",
-    value: "Dir Lower, KPK, Pakistan",
-    href: "#",
+    value: profile.location,
+    href: "",
   },
 ]
 
@@ -47,19 +48,18 @@ export function Contact() {
     setStatus('idle')
 
     try {
-      // Send email using EmailJS
       const response = await emailjs.send(
-        "service_pb3vqvf", // Service ID
-        "template_9mq8o1h", // Template ID
+        contactSection.emailjs.serviceId,
+        contactSection.emailjs.templateId,
         {
-          name: name,
-          email: email,
-          message: message,
+          name,
+          email,
+          message,
         },
-        "SOtaM2-ig7OnmyhHG" // Public Key
+        contactSection.emailjs.publicKey
       )
 
-      if (response.text === 'OK' || response.status === 200 || response.statusText === 'OK') {
+      if (response.text === 'OK' || response.status === 200) {
         setStatus('success')
         setName('')
         setEmail('')
@@ -90,10 +90,10 @@ export function Contact() {
             Contact
           </span>
           <h2 className="text-3xl md:text-4xl font-bold text-[#e2e8f0] mb-4">
-            Get In Touch
+            {contactSection.heading}
           </h2>
           <p className="text-[#94a3b8] max-w-xl mx-auto">
-            Have an AI or ML project in mind? Feel free to reach out and let&apos;s discuss how I can help.
+            {contactSection.subtitle}
           </p>
         </div>
 
@@ -101,14 +101,10 @@ export function Contact() {
         <div className="grid sm:grid-cols-2 gap-4 mb-10">
           {contactInfo.map((info, index) => {
             const Icon = info.icon
-            return (
-              <a
-                key={index}
-                href={info.href}
-                target={info.href.startsWith("http") ? "_blank" : undefined}
-                rel={info.href.startsWith("http") ? "noopener noreferrer" : undefined}
-                className="flex items-center gap-4 p-5 bg-[#0f172a]/50 border border-[#1e293b] rounded-xl hover:border-[#00e5ff]/30 hover:bg-[#0f172a] transition-all duration-300"
-              >
+            const cardClasses =
+              "flex items-center gap-4 p-5 bg-[#0f172a]/50 border border-[#1e293b] rounded-xl hover:border-[#00e5ff]/30 hover:bg-[#0f172a] transition-all duration-300"
+            const cardBody = (
+              <>
                 <div className="w-12 h-12 rounded-lg bg-[#00e5ff]/10 flex items-center justify-center">
                   <Icon className="w-5 h-5 text-[#00e5ff]" />
                 </div>
@@ -116,7 +112,23 @@ export function Contact() {
                   <p className="text-sm text-[#64748b] mb-0.5">{info.label}</p>
                   <p className="text-[#e2e8f0] font-medium truncate">{info.value}</p>
                 </div>
+              </>
+            )
+
+            return info.href ? (
+              <a
+                key={index}
+                href={info.href}
+                target={info.href.startsWith("http") ? "_blank" : undefined}
+                rel={info.href.startsWith("http") ? "noopener noreferrer" : undefined}
+                className={cardClasses}
+              >
+                {cardBody}
               </a>
+            ) : (
+              <div key={index} className={cardClasses}>
+                {cardBody}
+              </div>
             )
           })}
         </div>
